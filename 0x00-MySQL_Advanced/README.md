@@ -1,0 +1,1 @@
+ This project directory contains practice solutions on advanced mysql tasks. This is the first among the essential series of tasks on the use of adavanced mysql. It tests the understanding of the advanced use of mysql database
