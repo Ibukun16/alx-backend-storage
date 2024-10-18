@@ -1,12 +1,9 @@
--- A SQL script that creates a table called users with the following conditions
+-- A SQL script that creates a table called users with the following field
 -- id, integer, never null, auto increment and primary key
 -- email, string (255 characters), never null and unique
 -- name, string (255 characters)
--- If the table already exists, your script should not fail
--- The script can be executed on any database
-DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users (
-	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	email varchar(255) NOT UNIQUE,
+CREATE TABLE IF NOT EXISTS users (i
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	email varchar(255) NOT NULL UNIQUE,
 	name vachar(255) 
-)
+);
