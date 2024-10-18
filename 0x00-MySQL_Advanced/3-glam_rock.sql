@@ -5,6 +5,6 @@
 -- (in years until 2022 - please use 2022 instead of YEAR(CURDATE()))
 -- use attributes formed and split for computing the lifespan
 SELECT band_name, (IFNULL(split, '2022') - formed) AS lifespan
-	FROM metal_bands
-	WHERE FIND_IN_SET('Glam rock', IFNULL(style, "")) > 0
-	ORDER BY lifespan DESC;
+FROM metal_bands
+WHERE FIND_IN_SET('Glam rock', IFNULL(style, "")) > 0
+ORDER BY lifespan DESC;
