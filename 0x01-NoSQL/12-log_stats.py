@@ -31,7 +31,7 @@ def nginx_log_stats(nginx_collection):
         count = len(list(nginx_collection.find({"method": method})))
         print(f"\tmethod {method}: {count}")
     count_status_checked = len(list(nginx_collection.find(
-        {"method": "GET", "Path": "/status"}
+        {"method": "GET", "path": "/status"}
     )))
     print(f"{count_status_checked} status check")
 
