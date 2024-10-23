@@ -22,7 +22,11 @@ from pymongo import MongoClient
 
 
 def nginx_log_stats(nginx_collection):
-    """Prints stats on Nginx request logs."""
+    """Prints stats on Nginx request logs.
+    
+    Prints statistics of the top 10 of the most present IPs in
+    the collection nginx of the database logs sorted accordingly
+    """
     print(f"{nginx_collection.count_documents({})} logs")
 
     print("Methods:")
@@ -35,22 +39,17 @@ def nginx_log_stats(nginx_collection):
     )))
     print(f"{count_status_checked} status check")
 
-    
-def print_topIPs(server_logs):
-    """
-    Prints statistics of the top 10 of the most present IPs in
-    the collection nginx of the database logs sorted accordingly
-    """
     print("IPs:")
-    logs_request = server_logs.aggregate([
+    logs_request = nginx_collection.aggregate([
         {
             "$group": {"_id": "$ip", "totalRequests": {"$sum": 1}}
         },
         {"$sort": {"totalRequests": -1}},
         {"$limit": 10},
+        {"$project": {"_id": 0, "ip": "$_id", "totalRequests": 1}}
     ])
     for log in logs_request:
-        ip = log["_id"]
+        ip = log["ip"]
         count_ip_requests = log["totalRequests"]
         print(f"\t{ip}:{count_ip_requests}")
 
@@ -58,4 +57,3 @@ def print_topIPs(server_logs):
 if __name__ == "__main__":
     mongo_client = MongoClient('mongodb://127.0.0.1:27017/')
     nginx_log_stats(mongo_client.logs.nginx)
-    print_topIPs(mongo_client.logs.nginx)
