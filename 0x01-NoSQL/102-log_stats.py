@@ -49,7 +49,6 @@ def print_topIPs(server_logs):
         {"$sort": {"totalRequests": -1}},
         {"$limit": 10},
     ])
-    print("IPs:")
     for log in logs_request:
         ip = log["_id"]
         count_ip_requests = log["totalRequests"]
