@@ -21,19 +21,21 @@ import pymongo
 from pymongo import MongoClient
 
 
-def nginx_request_stats(nginx_collection):
+def nginx_log_stats(nginx_collection):
     """Prints stats Nginx request logs."""
     print(f"{nginx_collection.count_documents({})} logs")
 
     print("Methods:")
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        count_methods = nginx_collection.count_documents({"method": method})
-        print(f"\tmethod {method}: {count_methods}")
-    getcount_status_checks = nginx_collection.count_documents(
-            {"method": "GET", "Path": "/status"})
-    print(f"{getcount_status_checks} status check")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        count = len(list(nginx_collection.find({"method": method})))
+        print(f"\tmethod {method}: {count}")
+    count_status_checked = len(list(nginx_collection.find(
+        {"method": "GET", "Path": "/status"}
+    )))
+    print(f"{count_status_checked} status check")
 
 
 if __name__ == "__main__":
-    mongo_client = MongoClient('mongodb://127.0.0.1:27017/').logs.nginx
-    nginx_request_stats(mongo_client)
+    mongo_client = MongoClient('mongodb://127.0.0.1:27017/')
+    nginx_log_stats(mongo_client.logs.nginx)
