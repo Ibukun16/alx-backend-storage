@@ -42,18 +42,19 @@ def nginx_log_stats(nginx_collection):
     print("IPs:")
     logs_request = nginx_collection.aggregate([
         {
-            "$group": {"_id": "$ip", "totalRequests": {"$sum": 1}}
+            "$group": {"_id": "$ip", "count": {"$sum": 1}}
         },
-        {"$sort": {"totalRequests": -1}},
+        {"$sort": {"count": -1}},
         {"$limit": 10},
-        {"$project": {"_id": 0, "ip": "$_id", "totalRequests": 1}}
+        {"$project": {"_id": 0, "ip": "$_id", "count": 1}}
     ])
     for log in logs_request:
         ip = log["ip"]
-        count_ip_requests = log["totalRequests"]
-        print(f"\t{ip}:{count_ip_requests}")
+        count_ip_requests = log["count"]
+        print(f"\t{ip}:{count}")
 
 
 if __name__ == "__main__":
+    """Return some stats about Nginx logs stored in MongoDB"""
     mongo_client = MongoClient('mongodb://127.0.0.1:27017/')
     nginx_log_stats(mongo_client.logs.nginx)
