@@ -1,0 +1,1 @@
+This project directory contains practice solutions to tasks on the understanding and the use of NoSQL MongoD. The project is a major project in the series of alx-backend storage projects of the advnaced lavel of the ALX SE Programm
