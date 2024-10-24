@@ -1,0 +1,1 @@
+This project directory holds solutions to practise tasks that test the understanding of the use of redis. Redis is one of the database storage use for backend development. This is one of the series of projects in ALX advanced SE development projects. Come with me and enjoy the ride
