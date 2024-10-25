@@ -63,6 +63,7 @@ def replay(fn: Callable):
 
 class Cache:
     """Rep an object for storing data in a Redis database storage"""
+
     def __init__(self) -> None:
         """Initializing the cache instance for the function"""
         self._redis = redis.Redis()
@@ -82,8 +83,8 @@ class Cache:
     def get(self, key: str, fn: Callable = None,
             ) -> Union[str, bytes, int, float]:
         """Retrieves value from a Redis database storage"""
-        data = self._redis.get(key)
-        return fn(data) if fn is not None else data
+        val = self._redis.get(key)
+        return fn(val) if fn is not None else val
 
     def get_str(self, key: str) -> str:
         """Retrieves a string value from a Redis database storage"""
