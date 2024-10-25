@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """A module that uses the Redis NoSQL datastorage/database"""
-import uuid
 import redis
+from uuid import uuid4
 from functools import wraps
 from typing import Any, Callable, Union
 
@@ -76,7 +76,7 @@ class Cache:
         Store value in a Redis database and
         return the key to the stored value
         """
-        data_key = str(uuid.uuid4())
+        data_key = str(uuid4())
         self._redis.set(data_key, data)
         return data_key
 
