@@ -72,10 +72,10 @@ def replay(fn: Callable) -> None:
             output = ""
 
         # print(f"{function_name}(*{input}) -> {output}")
-        print("{}(*{}) -> {}".format(function_name, inputt, output))
+        print("{}(*{}) -> {}".format(f_name, inputt, output))
 
 
-class Cache:
+class Cache():
     """Rep an object for storing data in a Redis database storage"""
 
     def __init__(self) -> None:
