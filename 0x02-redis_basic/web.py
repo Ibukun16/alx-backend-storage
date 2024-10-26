@@ -3,21 +3,20 @@
 import redis
 import requests
 from functools import wraps
-from typing import Callable
 
 
 redis_store = redis.Redis()
 """Redis instance for module-level"""
 
 
-def url_data_cacher(method: Callable) -> Callable:
+def url_data_cacher(method):
     """Caches the output of the data fetched"""
     @wrap(method)
-    def wrapper(url) -> str:
+    def wrapper(url):
         """Function for caching the output"""
-        output = redis_store.get(f"cached:{url}")
-        if output:
-            return output.decode('utf-8')
+        data_cache = redis_store.get(f"cached:{url}")
+        if data_cache:
+            return data_cache.decode("utf-8")
         html_content = method(url)
         redis_store.incr(f"count:{url}")
         redis_store.set(f"cached:{url}", html_content, ex=10)
@@ -36,4 +35,4 @@ def get_page(url: str) -> str:
 
 
 if __name__ == "__main__":
-    get_page("http//slowly.robertomurray.co.uk")
+    get_page("http//slowwly.robertomurray.co.uk")
