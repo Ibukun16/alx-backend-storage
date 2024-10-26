@@ -19,7 +19,7 @@ def url_data_cacher(method):
             return data_cache.decode("utf-8")
         html_content = method(url)
         redis_store.incr(f"count:{url}")
-        redis_store.set(f"cached:{url}", html_content, ex=10)
+        redis_store.set(f"cached:{url}", html_content)
         redis_store.expire(f"cached:{url}", 10)
         return html_content
     return wrapper
@@ -32,7 +32,3 @@ def get_page(url: str) -> str:
     and tracking the request.
     """
     return requests.get(url).text
-
-
-if __name__ == "__main__":
-    get_page("http//slowwly.robertomurray.co.uk")
