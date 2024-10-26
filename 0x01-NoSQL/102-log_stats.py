@@ -39,17 +39,19 @@ def nginx_log_stats(nginx_collection):
     )))
     print(f"{count_status_checked} status check")
 
+
+def print_topIPs(server_logs):
+    """Print stats of the top ten ips cached"""
     print("IPs:")
-    logs_request = nginx_collection.aggregate([
+    logs_request = server_logs.aggregate([
         {
             "$group": {"_id": "$ip", "count": {"$sum": 1}}
         },
         {"$sort": {"count": -1}},
         {"$limit": 10},
-        {"$project": {"_id": 0, "ip": "$_id", "count": 1}}
     ])
     for log in logs_request:
-        ip = log["ip"]
+        ip = log["_id"]
         count_ip_requests = log["count"]
         print(f"\t{ip}:{count}")
 
@@ -58,3 +60,4 @@ if __name__ == "__main__":
     """Return some stats about Nginx logs stored in MongoDB"""
     mongo_client = MongoClient('mongodb://127.0.0.1:27017/')
     nginx_log_stats(mongo_client.logs.nginx)
+    print_topIPs(mongo_client.logs.nginx)
