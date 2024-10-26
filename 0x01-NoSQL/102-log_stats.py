@@ -53,7 +53,7 @@ def print_topIPs(server_logs):
     for log in logs_request:
         ip = log["_id"]
         count_ip_requests = log["count"]
-        print(f"\t{ip}:{count}")
+        print(f"\t{ip}:{count_ip_requests}")
 
 
 if __name__ == "__main__":
