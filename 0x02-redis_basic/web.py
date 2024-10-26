@@ -9,9 +9,9 @@ redis_store = redis.Redis()
 """Redis instance for module-level"""
 
 
-def url_data_cacher(method):
+def url_data_cacher(method: Callable) -> Callable:
     """Caches the output of the data fetched"""
-    @wrap(method)
+    @wraps(method)
     def wrapper(url):
         """Function for caching the output"""
         data_cache = redis_store.get(f"cached:{url}")
