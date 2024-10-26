@@ -15,13 +15,15 @@ def url_data_cacher(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url):
         """Function for caching the output"""
+        if not redis_store.exists(f"count:{url}"):
+            redis_store.set(f"count:{url}", 0)
+        redis_store.incr(f"count:{url}")
+
         data_cache = redis_store.get(f"cached:{url}")
         if data_cache:
             return data_cache.decode("utf-8")
-        html_content = method(url)
-        redis_store.incr(f"count:{url}")
-        redis_store.set(f"cached:{url}", html_content)
-        redis_store.expire(f"cached:{url}", 10)
+        html_content = func(url)
+        redis_store.setex(f"cached:{url}", 10,  html_content)
         return html_content
     return wrapper
 
@@ -29,7 +31,7 @@ def url_data_cacher(method: Callable) -> Callable:
 @url_data_cacher
 def get_page(url: str) -> str:
     """
-    Return the content of a URL after caching the request response,
-    and tracking the request.
+    Fetch and return the content of a URL after caching the request
+    response and tracking the request.
     """
     return requests.get(url).text
