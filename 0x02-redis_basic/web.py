@@ -10,9 +10,9 @@ redis_store = redis.Redis()
 """Redis instance for module-level"""
 
 
-def url_data_cacher(method: Callable[[str], str]) -> Callable[[str], str]:
+def url_data_cacher(func: Callable[[str], str]) -> Callable[[str], str]:
     """Caches the output of the data fetched"""
-    @wraps(method)
+    @wraps(func)
     def wrapper(url: str) -> str:
         """Function for caching the output"""
         if not redis_store.exists(f"count:{url}"):
@@ -22,7 +22,7 @@ def url_data_cacher(method: Callable[[str], str]) -> Callable[[str], str]:
         data_cache = redis_store.get(f"cached:{url}")
         if data_cache:
             return data_cache.decode("utf-8")
-        html_content = method(url)
+        html_content = func(url)
         redis_store.setex(f"cached:{url}", 10,  html_content)
         return html_content
     return wrapper
